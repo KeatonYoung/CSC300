@@ -82,7 +82,7 @@ void BST::insert(reservation*& node, int time)
     if(node->right){
         node->subtreeSize += node->right->subtreeSize;
     }
-    cout << "Updated subtree size of node " << node->time << " to " << node->subtreeSize << endl;
+    cout << "Updated subtree size of node" << node->time << " to " << node->subtreeSize << endl;
     // same as before - just make sure to update subtree size for inserted node
 }
 
@@ -110,3 +110,5 @@ void BST::inorder(reservation* root)
     cout << root->time << " ";
     inorder(root->right);
 }
+ 
+ 
