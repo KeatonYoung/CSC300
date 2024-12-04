@@ -411,4 +411,157 @@ bool Graph::detectCycle() {
     }
     return false;
 }
+void Graph::dijkstra(char start) {
+
+    priority_queue<pair<int, char>, vector<pair<int, char>>, greater<pair<int, char>>> pq;
+
+    vector<int> distances(maxVertices, INT_MAX);
+   
+    vector<char> previous(maxVertices, '-');
+    int startIndex = start - 'A';
+
+    distances[startIndex] = 0;
+    pq.push({0, start});
+
+    while (!pq.empty()) {
+        auto [dist, currVertex] = pq.top();
+        pq.pop();
+
+        int currIndex = currVertex - 'A';
+       
+        if (dist > distances[currIndex]) continue;
+
+        for (int i = 0; i < maxVertices; i++) {
+           
+            if (adjMatrix[currIndex][i] != 0) {
+                int newDist = dist + adjMatrix[currIndex][i];
+               
+                if (newDist < distances[i]) {
+                    distances[i] = newDist;
+                    previous[i] = currVertex;
+                    pq.push({newDist, static_cast<char>(i + 'A')});
+                }
+            }
+        }
+    }
+
+    cout << "Dijkstra's shortest paths from " << start << ":\n";
+    for (int i = 0; i < maxVertices; i++) {
+       
+        if (distances[i] == INT_MAX) continue;
+        cout << start << " -> " << (char)(i + 'A') << ": " << distances[i] << " (via " << previous[i] << ")\n";
+    }
+}
+struct Edge {
+    int src, dest, weight;
+};
+
+bool compareEdges(const Edge& e1, const Edge& e2) {
+    return e1.weight < e2.weight;
+}
+
+class UnionFind {
+private:
+    
+    vector<int> parent, rank;
+
+public:
+    
+    UnionFind(int size) : parent(size), rank(size, 0) {
+        for (int i = 0; i < size; i++) parent[i] = i;
+    }
+
+    int find(int x) {
+        if (parent[x] != x)
+      
+            parent[x] = find(parent[x]);
+        return parent[x];
+    }
+
+    bool unionSets(int x, int y) {
+        int rootX = find(x), rootY = find(y);
+        if (rootX == rootY) return false;
+      
+        if (rank[rootX] > rank[rootY])
+            parent[rootY] = rootX;
+      
+        else if (rank[rootX] < rank[rootY])
+            parent[rootX] = rootY;
+        else {
+            parent[rootY] = rootX;
+            rank[rootX]++;
+        }
+        return true;
+    }
+};
+
+void Graph::kruskal() {
+    vector<Edge> edges;
+
+   
+    for (int i = 0; i < maxVertices; i++) {
+        for (int j = i + 1; j < maxVertices; j++) {
+           
+            if (adjMatrix[i][j] != 0) {
+                edges.push_back({i, j, adjMatrix[i][j]});
+            }
+        }
+    }
+
+    
+    sort(edges.begin(), edges.end(), compareEdges);
+
+    UnionFind uf(maxVertices);
+    int mstCost = 0;
+
+    cout << "Kruskal's MST:\n";
+    for (const auto& edge : edges) {
+      
+        if (uf.unionSets(edge.src, edge.dest)) {
+            cout << (char)(edge.src + 'A') << " - " << (char)(edge.dest + 'A') << " (" << edge.weight << ")\n";
+            mstCost += edge.weight;
+        }
+    }
+    cout << "Total cost: " << mstCost << endl
+}
+
+void Graph::prim() {
+     vector<bool> inMST(maxVertices, false);
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
+
+    inMST[0] = true;
+    for (int i = 1; i < maxVertices; i++) {
+        
+        if (adjMatrix[0][i] != 0) pq.push({adjMatrix[0][i], i});
+    }
+
+    int mstCost = 0;
+    cout << "Prim's MST:\n";
+
+    while (!pq.empty()) {
+      
+        auto [weight, v] = pq.top();
+        pq.pop();
+
+        if (inMST[v]) continue;
+
+        inMST[v] = true;
+        mstCost += weight;
+
+       
+        cout << "Connected: " << (char)('A' + v) << " with weight: " << weight << endl;
+
+       
+        for (int i = 0; i < maxVertices; i++) {
+          
+            if (adjMatrix[v][i] != 0 && !inMST[i]) {
+                pq.push({adjMatrix[v][i], i});
+            }
+        }
+    }
+    
+    
+    cout << "Total cost: " << mstCost << endl;
+}
+
 
