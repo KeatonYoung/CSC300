@@ -1,0 +1,84 @@
+
+Maze Game Project Report
+
+Features Implemented
+
+Represent the Maze as a Graph
+Implementation:
+The maze is represented as a graph where:
+Each cell is a node.
+Edges connect adjacent cells if no walls separate them.
+Walls act as constraints on edge creation, ensuring valid movement only.
+Data Structures:
+Graph: Encodes the maze structure.
+Hash Map: Efficiently tracks cell attributes such as rewards and traps.
+
+Add Rewards the Player Can Collect
+Implementation:
+Rewards are randomly placed in maze cells.
+When the player reaches a cell containing a reward, they gain points, and the reward is removed.
+Data Structures:
+Hash Map: Used to track reward locations and their states.
+
+Add an Undo Feature
+Implementation:
+The player's moves are stored in a stack.
+On undo, the last move is popped from the stack, and the player reverts to the previous position.
+Data Structures:
+Stack: Tracks the history of player moves.
+
+Add a Hint Feature
+Implementation:
+The hint system calculates the optimal direction for the player to move toward the goal.
+Breadth-First Search (BFS) is used to find the shortest path from the player's current position to the endpoint.
+Data Structures:
+Queue: Used in BFS to explore nodes layer by layer.
+
+Allow the Player to See Explored Parts of the Maze
+Implementation:
+As the player moves, only cells visited by the player are displayed.
+This feature utilizes graph traversal to mark explored areas.
+Data Structures:
+Graph Traversal: Updates and displays the explored portion of the maze.
+
+Data Structures and Their Roles
+
+Graph:
+Models the maze, where nodes are cells and edges are pathways.
+Facilitates shortest-path calculations and traversal for hints.
+
+Hash Map:
+Tracks rewards, traps, and other cell-specific attributes for fast lookup and updates.
+
+Stack:
+Stores the history of player moves to enable the undo feature.
+
+Queue:
+Used in BFS to find the shortest path and provide hints.
+
+Challenges Faced
+
+Dynamic Representation of the Maze:
+Building and updating the graph in real time during maze generation required careful implementation to ensure structural correctness.
+
+Integrating Multiple Features:
+Balancing the interaction of features like rewards, traps, and undo functionality added complexity.
+
+User Interface:
+Providing meaningful feedback to players while keeping the game logic intact was crucial for usability.
+
+Potential Enhancements
+
+Dynamic Obstacles:
+Introduce obstacles that block paths after a timer expires, making navigation more challenging.
+
+Moving Traps:
+Traps that move based on a predefined pattern or randomly.
+
+Timers:
+Add a time limit for solving the maze, using a min-heap to track time-based events efficiently.
+
+Puzzle-Solving Mechanisms:
+Use a binary tree to design puzzles for opening locked trap doors.
+
+This report highlights the implemented features, their associated data structures, and their impact on gameplay. The maze game demonstrates the integration of several fundamental algorithms and data structures into a cohesive and functional application.
